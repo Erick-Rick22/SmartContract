@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CONNECTION Wallet</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <style>
+        body {
+            background-color: palevioletred;
+            font-size: 33px;
+            text-align: center;
+        }
+        button {
+            background-color: aquamarine;
+            font-size: 33px;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        button:hover {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+	<button onclick="connectMetamask()"> Conecta a METAMASK </button> <br>
+	<p id="accountArea"></p>
+    <button onclick="connectContract()"> Canecta con contrato </button><br>
+    <p id="contractArea">Enlace Doc. Digital: </p>
+	<button onclick="readContract()"> Datos del contrato </button> <br>
+	<p id="dataArea">Lugar de contrato: </p>
+    <p id="dataProp">Tipo de Propiedad: </p>
+    <p id="dataRegPub">Id. Registro público de propiedad: </p>
+    <p id="dataValNot">Id. Validación Notarial: </p>
+    <p id="dataNumCont">N° Contrato: </p>
+    <p id="dataFecha">Fecha de adquisición</p>
+    <p id="dataCaract">Caracteristicas de la propiedad</p>
+ <!--  """<button onclick="changeContract()"> cambiar datos del contrato </button> <br>
+	<input type="text" id="inputArea"> 
+ -->
+
+    <script>
+        //1- connect metamask
+        let account;
+        const connectMetamask = async () => {
+            if(window.ethereum !== "undefined") {
+                const accounts = await ethereum.request({method: "eth_requestAccounts"});
+                account = accounts[0];
+                document.getElementById("accountArea").innerHTML = account;
+            }
+        }
+
+        //2- connect to smart contract
+        const connectContract = async () => {
+            const ABI = [
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myCaract",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myCity",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myFecha",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myNumCont",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myProp",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myRegPub",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "myValNot",
+                "outputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+            const Address = "0x021C9912a9E4c918DDb7D04903df00B338E85c43"; 
+            window.web3 = await new Web3(window.ethereum);
+            window.contract = await new window.web3.eth.Contract( ABI, Address); 
+            document.getElementById("contractArea").innerHTML = "connected to smart contract: " + Address;
+        }
+
+        //3-read data from smart contract
+        const readContract = async () => {
+
+            const data = await window.contract.methods.myCity().call();
+            document.getElementById("dataArea").innerHTML = data;
+
+            const data1 = await window.contract.methods.myProp().call();
+            document.getElementById("dataProp").innerHTML = data1;
+            
+            const data2 = await window.contract.methods.myRegPub().call();
+            document.getElementById("dataRegPub").innerHTML = data2;
+            
+            const data3 = await window.contract.methods.myValNot().call();
+            document.getElementById("dataValNot").innerHTML = data3;
+
+            const data4 = await window.contract.methods.myNumCont().call();
+            document.getElementById("dataNumCont").innerHTML = data4;
+
+            const data5 = await window.contract.methods.myFecha().call();
+            document.getElementById("dataFecha").innerHTML = data5;
+            
+            const data6 = await window.contract.methods.myCaract().call();
+            document.getElementById("dataCaract").innerHTML = data6;
+        }
+    </script>
+    <!--0xb0131b6AED99e25d1dA3710b8c69d309Ae784ff9, 0x021C9912a9E4c918DDb7D04903df00B338E85c43 -->
+</body>
+</html>
